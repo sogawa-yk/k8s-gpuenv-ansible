@@ -15,7 +15,7 @@
               var: token.stdout
 
 - name: Install k8s for nodes.
-  hosts: worker
+  hosts: addWorker
   become: yes
   gather_facts: yes
   vars:
