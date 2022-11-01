@@ -1,0 +1,38 @@
+- name: make nfs mount point
+  hosts: initWorker
+  become: yes
+  gather_facts: no
+
+  tasks:
+  - name: update
+    become: yes
+    shell:
+      cmd: apt-get update -y
+
+  - name: install necessary package
+    become: yes
+    shell:
+      cmd: apt-get install -y nfs-common
+
+  - name: make directory for rpcbind
+    become: yes
+    file: path=/run/sendsigs.omit.d/rpcbind state=directory owner=root group=root mode=0777
+
+  - name: make directory to mount nfs
+    become: yes
+    file: path=/mnt/nfs state=directory owner=root group=root mode=0777
+  
+  - name: start rpcbind
+    become: yes
+    shell:
+      cmd: /etc/init.d/rpcbind start
+
+  - name: start nfs-common
+    become: yes
+    shell:
+      cmd: /etc/init.d/nfs-common start
+
+  - name: mount nfs
+    become: yes
+    shell:
+      cmd: mount -t nfs 192.168.2.49:/volume1/k8s_share /mnt/nfs/

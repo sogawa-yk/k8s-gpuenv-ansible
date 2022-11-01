@@ -1,0 +1,15 @@
+- name: make local storage
+  hosts: initWorker
+  become: yes
+  gather_facts: no
+
+  tasks:
+  - name: make directory
+    become: yes
+    shell:
+      cmd: mkdir /mnt/k8s_local_storage
+
+  - name: change mod
+    become: yes
+    shell:
+      cmd: chmod 777 /mnt/k8s_local_storage
